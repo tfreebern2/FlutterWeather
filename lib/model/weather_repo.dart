@@ -15,12 +15,41 @@ class WeatherRepo {
 
   WeatherRepo({this.client});
 
+  int cnt = 50;
+
+  void addCities(int count) {
+    cnt = count;
+  }
+
   Future<List<WeatherModel>> updateWeather(LocationResult result) async {
     String url;
     if (result != null) {
-      url = 'http://api.openweathermap.org/data/2.5/find?lat=${result.location.latitude}&lon=${result.location.longitude}&cnt=10&appid=$API_key';
+      url = 'http://api.openweathermap.org/data/2.5/find?lat=${result.location.latitude}&lon=${result.location.longitude}&cnt=$cnt&appid=$API_key';
     } else {
       url = 'http://api.openweathermap.org/data/2.5/find?lat=28.75&lon=-81.31&cnt=10&appid=$API_key';
     }
+
+    final response = await client.get(url);
+
+    List<WeatherModel> req = BaseResponse
+    .fromJson(json.decode(response.body))
+    .cities
+    .map((city) => WeatherModel.fromResponse(city))
+    .toList();
+
+    return req;
+  }
+
+  Future<LocationResult> updateLocation() async {
+    Future<LocationResult> result = Geolocation.lastKnownLocation();
+    return result;
+  }
+
+  Future<bool> getGps() async {
+    final GeolocationResult result = await Geolocation.isLocationOperational();
+    if (result.isSuccessful)
+      return true;
+    else
+    return false;
   }
 }
