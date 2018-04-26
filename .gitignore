@@ -9,4 +9,4 @@ build/
 ios/.generated/
 packages
 .flutter-plugins
-const.dart
+.lib/const.dart
