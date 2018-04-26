@@ -28,7 +28,11 @@ class City extends Object with _$CitySerializerMixin {
   final Coord coord;
   final Main main;
   final int dt;
+
+  @JsonKey(nullable: true)
   final Wind wind;
+
+  @JsonKey(nullable: true)
   final Rain rain;
   final Clouds clouds;
   final List<Weather> weather;
@@ -60,12 +64,13 @@ class Coord extends Object with _$CoordSerializerMixin {
 @JsonSerializable()
 class Main extends Object with _$MainSerializerMixin {
   final double temp;
-  final int pressure;
+  final double pressure;
+
   final int humidity;
   @JsonKey(name: "temp_max")
-  final int tempMax;
+  final double tempMax;
   @JsonKey(name: "temp_min")
-  final int tempMin;
+  final double tempMin;
 
   Main(
     this.temp,
@@ -81,7 +86,9 @@ class Main extends Object with _$MainSerializerMixin {
 @JsonSerializable()
 class Wind extends Object with _$WindSerializerMixin{
   final double speed;
-  final int deg;
+  final double deg;
+
+  @JsonKey(nullable: true)
   final double gust;
 
   Wind(
