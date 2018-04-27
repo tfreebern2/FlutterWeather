@@ -4,7 +4,7 @@ class WeatherModel{
   final String city;
   final double temperature;
   final String description;
-  final double rain;
+  final String icon;
   final double lat;
   final double long;
 
@@ -12,16 +12,16 @@ class WeatherModel{
     this.city,
     this.temperature,
     this.description,
-    this.rain,
+    this.icon,
     this.lat,
     this.long
   });
 
   WeatherModel.fromResponse(City response) 
   : city = response.name,
-    temperature = response.main.temp,
-    description = response.weather[0].description,
-    rain = response.rain.threeHour,
+    temperature = (response.main.temp * (9/5)) - 459.75,
+    description = response.weather[0]?.description,
+    icon = response.weather[0]?.icon,
     lat = response.coord.lat,
     long = response.coord.long;
 }
